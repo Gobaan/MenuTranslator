@@ -1,0 +1,37 @@
+<html>
+	<body>
+
+		<canvas id="myCanvas" width="{{size}}" height="{{size}}" style="border:1px solid #000000;">
+</canvas>
+	<script>
+	var c = document.getElementById("myCanvas");
+	var ctx = c.getContext("2d");
+	ctx.font = "12px Arial";
+	ctx.beginPath();
+	ctx.strokeStyle = "#000000";
+	{% for word in words %}
+		ctx.rect(
+			{{word.x_bounds[0] / ratio}}, 
+			{{word.y_bounds[0] / ratio}},
+			{{(word.x_bounds[1] - word.x_bounds[0]) / ratio}},
+			{{(word.y_bounds[1] - word.y_bounds[0]) / ratio}}
+		);
+		ctx.fillText("{{word.word}}", {{word.x_bounds[0] / ratio}}, {{(word.y_bounds[0] + word.y_bounds[1])/2/ratio}});
+	{% endfor %}
+	ctx.closePath();
+	ctx.stroke();
+	ctx.beginPath();
+	ctx.strokeStyle = "#FF0000";
+	{% for item in items %}
+		ctx.rect(
+			{{item.x_bounds[0] / ratio}}, 
+			{{item.y_bounds[0] / ratio}},
+			{{(item.x_bounds[1] - item.x_bounds[0]) / ratio}},
+			{{(item.y_bounds[1] - item.y_bounds[0]) / ratio}}
+		);
+		ctx.stroke();
+	{% endfor %}
+	ctx.closePath();
+	</script>
+	</body>
+</html>

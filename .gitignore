@@ -1,0 +1,10 @@
+*.pyc
+*.db
+*.pickle
+*.jpeg
+__pycache__
+*.json
+
+*.log
+
+

@@ -1,0 +1,36 @@
+<html>
+    <head>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<!--
+	  Jcrop is not required by JavaScript Load Image, but included for the demo
+	-->
+	<link rel="stylesheet" href="assets/css/jquery.Jcrop.css" />
+	<link rel="stylesheet" href="assets/css/demo.css" />
+    </head>
+    <body>
+	<h2>Select an image file</h2>
+	<p><input type="file" id="file-input" /></p>
+	<p>Or <strong>drag &amp; drop</strong> an image file onto this webpage.</p>
+	<h2>Result</h2>
+	<p id="actions" style="display:none;">
+	  <button type="button" id="edit">Edit</button>
+	  <button type="button" id="crop">Crop</button>
+	  <button type="button" id="rotate">Rotate</button>
+	  <button type="button" id="cancel">Cancel</button>
+	</p>
+	<div id="result">
+	  <p>
+	    This demo works only in browsers with support for the
+	    <a href="https://developer.mozilla.org/en/DOM/window.URL">URL</a> or
+	    <a href="https://developer.mozilla.org/en/DOM/FileReader">FileReader</a>
+	    API.
+	  </p>
+	</div>
+        <script src="assets/js/load-image.all.min.js"></script>
+	<script src="assets/js/jquery.js"></script>
+	<script src="assets/js/jquery.Jcrop.js"></script>
+	<script src="assets/js/demo.js"></script>
+
+    </body>
+
+</html>

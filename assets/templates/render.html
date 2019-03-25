@@ -1,0 +1,17 @@
+<html>
+	<head><title>Translation</title></head>
+	<body>
+		<table id="menu">
+			<tr><td>Original Name</td><td>Translation</td><td>Images</td></tr>
+			{% for item in menu %}
+			<tr>
+				<td>{{item['name']}}</td>
+				<td>{{item['translation']}}</td>
+				{% for image in item['images'][:3] %}
+
+				<td><a href={{ image['image']['contextLink'] }}><img src={{ image['link'] }} width="64" height="64"/></a></td>
+				{% endfor %}
+			</tr>
+			{% endfor %}
+		</table>
+</html>
