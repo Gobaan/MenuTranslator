@@ -16,7 +16,15 @@
 			{{(word.x_bounds[1] - word.x_bounds[0]) / ratio}},
 			{{(word.y_bounds[1] - word.y_bounds[0]) / ratio}}
 		);
-		ctx.fillText("{{word.word}}", {{word.x_bounds[0] / ratio}}, {{(word.y_bounds[0] + word.y_bounds[1])/2/ratio}});
+	ctx.save();
+        ctx.translate( 
+		{{word.x_bounds[0] / ratio}}, 
+		{{(word.y_bounds[0] + word.y_bounds[1])/2/ratio}});
+	ctx.rotate({{word.slant()}});
+	ctx.textAlign="center";
+	ctx.fillText("{{word.word | escape}}", 0, 0);
+	//ctx.fillText("{{word.word | escape}}", {{word.x_bounds[0] / ratio}}, {{(word.y_bounds[0] + word.y_bounds[1])/2/ratio}});
+	ctx.restore();
 	{% endfor %}
 	ctx.closePath();
 	ctx.stroke();

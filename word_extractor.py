@@ -90,14 +90,19 @@ def get_bounds(names):
     y_bound = max(max(name.y_bounds) for name in names)
     return (x_bound, y_bound)
 
-def get_names(words):
+def get_theta(words):
+    return sum(word.slant() for word in words) / len(words)
+
+def get_names(text):
   #x_names = sorted(words, key=lambda word: word.x_bounds[0])
   # word_length = max(word.x_bounds[1] - word.x_bounds[0] for word in words)
-  max_length = max(word.length() for word in words) 
+  words = [Word(word) for word in text]
+  lengths = (sorted(word.length() for word in words))
+  decile_length = lengths[int(len(lengths)*0.9)]
   while words:
     current = [words.pop(0)]
     for name in list(words):
-        if current[-1].precedes(name, max_length):
+        if current[-1].precedes(name, decile_length):
             current += [name]
             words.remove(name)
     output = Name(current)
@@ -109,12 +114,13 @@ if __name__ == '__main__':
   with open('menu.pickle', 'rb') as fp:
     ocr_json = pickle.load(fp)
   text = ocr_json[1:]
+  print (ocr_json)
   words = [Word(word) for word in text]
   print (words[0])
   max_length = max(word.length() for word in words) 
   print (max_length)
   
-  for name in get_names(words):
+  for name in get_names(text):
     if str(name):
       print('full', name)
 

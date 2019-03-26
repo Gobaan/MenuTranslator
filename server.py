@@ -8,8 +8,10 @@ import menu_translator
 import pickle
 import uuid
 import word_extractor
+import html
 
 env = Environment(loader=FileSystemLoader('assets/templates'))
+env.filters['escape'] = html.escape
 
 # how does google ocr do with 180 rotatation, and can i hugh transfork to fix major rotations
 class Root(object):
@@ -23,16 +25,21 @@ class Root(object):
   def upload(self, menu_image):
     tmpl = env.get_template('render.html')
     bucket_name = "gobaan.com"
-    print (menu_image)
+    print (menu_image[:40])
+    hasher = hashlib.md5()
+    hasher.update(menu_image.encode('utf-8'))
+    name = hasher.hexdigest()
+
     header, encoded = menu_image.split(",", 1)
     data = b64decode(encoded)
     client = google.cloud.storage.Client()
     bucket = client.get_bucket(bucket_name)
-    hasher = hashlib.md5()
-    hasher.update(menu_image)
-    name = hasher.hexdigest()
     blob = bucket.blob(str(name))
+    if not blob.exists:
+        header = header[header.find(':') + 1:header.find(';')]
+        blob.upload_from_string(data, content_type=header)
 
+    print (blob.public_url)
     items = menu_translator.translate_image(blob.public_url)
     return tmpl.render(menu=items)
 
@@ -45,12 +52,9 @@ class Root(object):
       text = ocr_json[1:]
       words = [word_extractor.Word(word) for word in text]
 
-      print (average_slant)
-      words = [word.normalize(average_slant) for word in words]
-
       with open('names.pickle', 'rb') as fp:
           items = pickle.load(fp)
-      SIZE = 1800    
+      SIZE = 1000    
       ratio = max(word_extractor.get_bounds(items)) / SIZE
       return tmpl.render(words=words, items=items, ratio=ratio, size=SIZE)
 

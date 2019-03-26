@@ -51,6 +51,7 @@ def translate_text(query):
 def ocr_image(image_url):
   client = google.cloud.vision.ImageAnnotatorClient()
   print (image_url)
+  print ('running ocr')
   response = client.annotate_image({
         "image":{"source":{"image_uri": image_url}},
         "features": [{"type":"TEXT_DETECTION",}]
@@ -66,13 +67,15 @@ def ocr_image(image_url):
 class DefaultShelf(shelve.Shelf):
   #TODO: Share Session Object
   #TODO: Clear cache on error and notify user
-  def __init__(self, name, default_fn):
+  def __init__(self, name, default_fn, ignore_cache=False):
     super().__init__(dbm.open(name, "c"), None, True)
     self.default_fn = default_fn
+    self.ignore_cache = ignore_cache
 
   def __getitem__(self, key):
     try:
-      return super().__getitem__(key)
+      if not self.ignore_cache:
+        return super().__getitem__(key)
     except KeyError:
         pass
     print ('triggering default')
@@ -88,13 +91,16 @@ Currently caches to hard disk, maybe upgrade in the future
 """
 class Searcher(object):       
   # Possible bug: if two languages have the same name for a different food  
-  def __init__(self, cache_name = "google"):  
+  def __init__(self, cache_name = "google", ignore_cache=False):  
     self.cache_name = cache_name 
+    self.ignore_cache = ignore_cache
     
-  def __enter__(self):        
-    self.translation_shelf = DefaultShelf(f"translate_{self.cache_name}", translate_text)
-    self.image_shelf = DefaultShelf(f"images_{self.cache_name}", find_image)
-    self.ocr_shelf = DefaultShelf(f"ocr_{self.cache_name}", ocr_image)
+  def __enter__(self):    
+    def Shelf(prefix, fn):
+      return DefaultShelf(f'{prefix}_{self.cache_name}.db', fn, ignore_cache=self.ignore_cache)
+    self.translation_shelf = Shelf(f"translate", translate_text)
+    self.image_shelf = Shelf(f"images", find_image)
+    self.ocr_shelf = Shelf(f"ocr", ocr_image)
     return self
 
   def __exit__(self, *args):
@@ -123,6 +129,7 @@ if __name__ == "__main__":
     print (images)
     # Put image bucket url here
     image_url = "https://i.imgur.com/KedtDHK.jpg"
+    image_url = "https://storage.googleapis.com/gobaan.com/b68582de93dffa46700e489f462c48dd"
     ocr = searcher.get_ocr(image_url)
     print (ocr)
   
