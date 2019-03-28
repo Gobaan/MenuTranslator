@@ -5,7 +5,7 @@
 			<tr><td>Original Name</td><td>Translation</td><td>Images</td></tr>
 			{% for item in menu %}
 			<tr>
-				<td>{{item['name']}}</td>
+				<td>{{str(item['name'])}}</td>
 				<td>{{item['translation']}}</td>
 				{% for image in item['images'][:3] %}
 

@@ -1,13 +1,11 @@
-from io import BytesIO
-from pickle import Pickler, Unpickler
-import collections
-import dbm
 import google.cloud.vision, google.cloud.translate
+import dbm
 import json 
 import jsonpath_ng
 import requests
 import shelve
 import urllib.parse
+import logging
 
 #TODO: hook up caching
 #gcloud auth print-access-token
@@ -45,13 +43,13 @@ def find_image(query):
   return [{'image': image, 'link': link} for image, link in zip(images, links)]
 
 def translate_text(query):
+  logging.debug (f'google translating text for {query}')
   client = google.cloud.translate.Client()
   return client.translate(query, target_language=TARGET)['translatedText']
 
 def ocr_image(image_url):
   client = google.cloud.vision.ImageAnnotatorClient()
-  print (image_url)
-  print ('running ocr')
+  logging.debug (f'google ocring image: {image_url}')
   response = client.annotate_image({
         "image":{"source":{"image_uri": image_url}},
         "features": [{"type":"TEXT_DETECTION",}]
@@ -78,7 +76,6 @@ class DefaultShelf(shelve.Shelf):
         return super().__getitem__(key)
     except KeyError:
         pass
-    print ('triggering default')
     value = self.default_fn(key)
     if self.writeback:
       self.cache[key] = value
@@ -97,7 +94,7 @@ class Searcher(object):
     
   def __enter__(self):    
     def Shelf(prefix, fn):
-      return DefaultShelf(f'{prefix}_{self.cache_name}.db', fn, ignore_cache=self.ignore_cache)
+      return DefaultShelf(f'{prefix}_{self.cache_name}.cache', fn, ignore_cache=self.ignore_cache)
     self.translation_shelf = Shelf(f"translate", translate_text)
     self.image_shelf = Shelf(f"images", find_image)
     self.ocr_shelf = Shelf(f"ocr", ocr_image)
@@ -109,7 +106,9 @@ class Searcher(object):
     self.ocr_shelf.close()
    
   def get_ocr(self, image_url):
-      print (image_url)
+      logging.debug(f'fetching ocr for {image_url}')
+      ocr = self.ocr_shelf[image_url]
+      logging.debug(f'fetched ocr for {image_url} = {ocr}')
       return self.ocr_shelf[image_url]
 
   def get_translations(self, names):  

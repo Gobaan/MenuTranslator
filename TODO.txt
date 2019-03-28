@@ -1,0 +1,22 @@
+# Done:  display axis or auto rotate so text is aligned before slicing
+# Done: Shrink image before upload to limit time
+#   overlay prettily 
+# Two possible overlays: -> Full table?
+# Go with table approach for now, allow editting of translations 
+
+# Recreate menu but with translations? (doesn't fully work because words change size)a
+# Slice menu,  create new similar menu, don't search images, recipes etc until user selects a word
+# Maintain relative ordering
+# Rotate the menu first?
+
+# Add debug level logging/debug mode
+
+# Move to google cloud?
+# Safe guard against doss
+#  Parsing can be akward since menus go full retard, users need more control
+#  investigate translation to see if i can get the hints
+#  Location/Source hints may be value town
+#  allow users to fix ocr or edit translation 
+#  create lookup table for approximate translations (food lookup table)
+# Add test cases?
+# Canvas code on debug is retarded right now

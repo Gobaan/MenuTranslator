@@ -2,7 +2,7 @@ import pickle
 import math
 import statistics
 from shapely.geometry.polygon import Polygon
-
+import logging
 
 class Word(object):
   def __init__(self, word):
@@ -97,7 +97,8 @@ def get_names(text):
   #x_names = sorted(words, key=lambda word: word.x_bounds[0])
   # word_length = max(word.x_bounds[1] - word.x_bounds[0] for word in words)
   words = [Word(word) for word in text]
-  lengths = (sorted(word.length() for word in words))
+  lengths = sorted(word.length() for word in words)
+  print (lengths)
   decile_length = lengths[int(len(lengths)*0.9)]
   while words:
     current = [words.pop(0)]

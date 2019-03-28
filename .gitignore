@@ -4,7 +4,8 @@
 *.jpeg
 __pycache__
 *.json
+*.cache
 
 *.log
 
-
+node_modules/

@@ -1,5 +1,6 @@
 from jinja2 import Environment, FileSystemLoader
 
+import logging
 from base64 import b64decode
 import cherrypy
 import google.cloud.storage
@@ -9,10 +10,13 @@ import pickle
 import uuid
 import word_extractor
 import html
+import json
 
+
+logging.basicConfig(filename='app.log', level=logging.DEBUG)
 env = Environment(loader=FileSystemLoader('assets/templates'))
 env.filters['escape'] = html.escape
-
+env.filters['to_json'] = json.dumps
 # how does google ocr do with 180 rotatation, and can i hugh transfork to fix major rotations
 class Root(object):
   # TODO: Make landing page less shitty
@@ -25,7 +29,7 @@ class Root(object):
   def upload(self, menu_image):
     tmpl = env.get_template('render.html')
     bucket_name = "gobaan.com"
-    print (menu_image[:40])
+    logging.debug (menu_image[:40])
     hasher = hashlib.md5()
     hasher.update(menu_image.encode('utf-8'))
     name = hasher.hexdigest()
@@ -35,13 +39,21 @@ class Root(object):
     client = google.cloud.storage.Client()
     bucket = client.get_bucket(bucket_name)
     blob = bucket.blob(str(name))
+    logging.debug(f'blobs name is {blob.public_url}')
     if not blob.exists:
+        logging.debug(f'creating blob')
         header = header[header.find(':') + 1:header.find(';')]
         blob.upload_from_string(data, content_type=header)
-
-    print (blob.public_url)
+    logging.debug(f'translating')
     items = menu_translator.translate_image(blob.public_url)
     return tmpl.render(menu=items)
+ 
+  @cherrypy.expose
+  def slice(self):
+    tmpl = env.get_template('overlay.html')
+    url = 'https://storage.googleapis.com/gobaan.com/368e6892765c8a2b633c52dd60a1cf25'
+    items = menu_translator.translate_image(url)
+    return tmpl.render(menu=items, url=url)
 
   @cherrypy.expose
   def debug(self):
