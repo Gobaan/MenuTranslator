@@ -25,6 +25,12 @@ class Root(object):
     tmpl = env.get_template('viewport2.html')
     return tmpl.render()
 
+
+  @cherrypy.expose
+  def ocr(self):
+    with open('index2.html') as fp:
+        return fp.read()
+
   @cherrypy.expose
   def upload(self, menu_image):
     tmpl = env.get_template('render.html')

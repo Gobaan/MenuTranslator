@@ -1,12 +1,22 @@
+# investigate exif rotation and allowing users to rotate
+#  scrape some online menus and create test sets
+# create a debug server witg default parameters
+# ocr keyboard
+# Limit file size on upload, better message on empty file
+# CLI for clearing or browsing cache
+# Clean up extra files
+
+# add test cases
+# - move logic from server functions to external controller
+# - create client side tests 
+# - create ping tests
+
 # Allow Editting and saving of translations /input text?
 # Move to google cloud?
-# Safe guard against doss
 #  Parsing can be akward since menus go full retard, users need more control
 #  investigate translation to see if i can get the hints
 #  Location/Source hints may be value town
 #  create lookup table for approximate translations (food lookup table)
-# Add test cases?
-
 
 Done
 # Done:  display axis or auto rotate so text is aligned before slicing
@@ -20,3 +30,4 @@ Stretch
 # Slice menu,  create new similar menu, don't search images, recipes etc until user selects a word
 # Maintain relative ordering
 # Rotate the menu first?
+# Safe guard against doss
