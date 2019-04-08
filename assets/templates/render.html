@@ -1,17 +1,41 @@
 <html>
-	<head><title>Translation</title></head>
-	<body>
-		<table id="menu">
-			<tr><td>Original Name</td><td>Translation</td><td>Images</td></tr>
-			{% for item in menu %}
-			<tr>
-				<td>{{str(item['name'])}}</td>
-				<td>{{item['translation']}}</td>
-				{% for image in item['images'][:3] %}
+  <head><title>Translation</title></head>
+  <link rel="stylesheet" type="text/css" href="assets/css/hover.css">
 
-				<td><a href={{ image['image']['contextLink'] }}><img src={{ image['link'] }} width="64" height="64"/></a></td>
-				{% endfor %}
-			</tr>
-			{% endfor %}
-		</table>
+  <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+  <script src="assets/js/StackBlur.js"></script>  
+  <script src="assets/js/blur.js"></script>  
+  <body>
+    <div>
+      <div>
+        <div style="float: left; width: 50%">
+          <table class="table table-hover" id="menu">
+            <thead>
+             <tr><td>Original Name</td><td>Translation</td><td>Images</td></tr>
+            </thead>
+            <tbody>
+              {% for item in menu %}
+	      <tr id="food-{{loop.index}}" onclick="render('{{url}}', {{item['xs'] | to_json}}, {{item['ys'] |to_json}})">
+                <td>{{item['name']}}</td>
+                <td>{{item['translation']}}</td>
+                {% for image in item['images'][:3] %}
+                <td><a href={{ image['image']['contextLink'] }}><img src={{ image['link'] }} width="64" height="64"/></a></td>
+		{% endfor %}
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    <div style="float: right; width: 50%"><canvas id="view"/></div>
+<script>
+$('#menu tbody tr').click(function() {
+    $(this).addClass('bg-success').siblings().removeClass('bg-success');
+});
+
+</script>
+</body>
+
 </html>

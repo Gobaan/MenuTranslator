@@ -76,14 +76,12 @@ var shg_table = [
 		24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24,
 		24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24, 24 ];
 
-function stackBlurImage( imageID, canvasID, radius, blurAlphaChannel )
+function stackBlurImage( img, canvas, radius, blurAlphaChannel )
 {
 			
- 	var img = document.getElementById( imageID );
 	var w = img.naturalWidth;
     var h = img.naturalHeight;
        
-	var canvas = document.getElementById( canvasID );
       
     canvas.style.width  = w + "px";
     canvas.style.height = h + "px";
@@ -97,18 +95,17 @@ function stackBlurImage( imageID, canvasID, radius, blurAlphaChannel )
 	if ( isNaN(radius) || radius < 1 ) return;
 	
 	if ( blurAlphaChannel )
-		stackBlurCanvasRGBA( canvasID, 0, 0, w, h, radius );
+		stackBlurCanvasRGBA( canvas, 0, 0, w, h, radius );
 	else 
-		stackBlurCanvasRGB( canvasID, 0, 0, w, h, radius );
+		stackBlurCanvasRGB( canvas, 0, 0, w, h, radius );
 }
 
 
-function stackBlurCanvasRGBA( id, top_x, top_y, width, height, radius )
+function stackBlurCanvasRGBA( canvas, top_x, top_y, width, height, radius )
 {
 	if ( isNaN(radius) || radius < 1 ) return;
 	radius |= 0;
 	
-	var canvas  = document.getElementById( id );
 	var context = canvas.getContext("2d");
 	var imageData;
 	
@@ -370,12 +367,11 @@ function stackBlurCanvasRGBA( id, top_x, top_y, width, height, radius )
 }
 
 
-function stackBlurCanvasRGB( id, top_x, top_y, width, height, radius )
+function stackBlurCanvasRGB( canvas, top_x, top_y, width, height, radius )
 {
 	if ( isNaN(radius) || radius < 1 ) return;
 	radius |= 0;
 	
-	var canvas  = document.getElementById( id );
 	var context = canvas.getContext("2d");
 	var imageData;
 	

@@ -11,7 +11,7 @@ import uuid
 import word_extractor
 import html
 import json
-
+from google.api_core.exceptions import NotFound
 
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 env = Environment(loader=FileSystemLoader('assets/templates'))
@@ -40,14 +40,25 @@ class Root(object):
     bucket = client.get_bucket(bucket_name)
     blob = bucket.blob(str(name))
     logging.debug(f'blobs name is {blob.public_url}')
-    if not blob.exists:
-        logging.debug(f'creating blob')
+    try:
+        blob.reload()
+    except NotFound:
+        logging.debug(f'blob does not already exist')
         header = header[header.find(':') + 1:header.find(';')]
         blob.upload_from_string(data, content_type=header)
+
     logging.debug(f'translating')
     items = menu_translator.translate_image(blob.public_url)
-    return tmpl.render(menu=items)
+    return tmpl.render(url=blob.public_url, menu=items)
  
+  @cherrypy.expose
+  def test(self):
+    tmpl = env.get_template('render.html')
+    url = 'https://storage.googleapis.com/gobaan.com/5ca822dc8a6b25f64c57c99b846da890'
+    items = menu_translator.translate_image(url)
+    return tmpl.render(url=url, menu=items)
+
+
   @cherrypy.expose
   def slice(self):
     tmpl = env.get_template('overlay.html')
@@ -79,6 +90,10 @@ class Root(object):
  
 if __name__ == '__main__':
   cherrypy.config.update({
+
+   'tools.response_headers.on': True,
+            'tools.response_headers.headers': [
+                ('Access-Control-Allow-Origin', '*')],
     'server.socket_host': '104.237.154.27',
     'server.socket_port': 8091,
   })

@@ -15,7 +15,7 @@ def translate_image(image_url):
           pickle.dump(names, fp)
     
       translations = google.get_translations(names)
-      images = range(1000) #google.get_images(names)
+      images = google.get_images(names)
       data = [{
           'name': str(name), 
           'images':image, 
@@ -25,5 +25,3 @@ def translate_image(image_url):
           }
           for name, image, translation in zip(names, images, translations)]
       return data
-
-

@@ -1,0 +1,43 @@
+<html>
+	<head><title>Overlay</title></head>
+	<body>
+            <div id='clips'/>
+        <script src="assets/js/StackBlur.js"></script>	
+        <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+	<script>
+	$(document).ready(function() {
+		let bounds = {{menu | to_json}};
+		let image_url = "{{url}}";
+		for (const item of bounds) 
+		{
+		  let order = [[0, 0], [1, 0], [1,  1], [0, 1],  [0, 0]];
+	          let width = item.xs[1] - item.xs[0];
+		  let height = item.ys[1] - item.ys[0];
+		  let points = order.map(p => 
+		  `${item.xs[p[0]]}px ${item.ys[p[1]]}px`)
+		  let path = points.join(',');
+		  let image = document.createElement("img");
+		  let translate = `transform:translate(-${item.xs[0]}px, -${item.ys[0]}px);`
+	          let clip = `clip-path:polygon(${path});`;
+
+		  image.setAttribute('style', `${translate} ${clip}`);
+                  image.src = image_url;
+		  console.log(width);
+
+		  let div = document.createElement("div");
+		  div.style.overflow = "hidden";
+		  div.style.height = `${height}px`;
+		  div.style.width = `${width}px`;
+		  div.appendChild(image);
+		  let element = document.getElementById("clips");
+
+                  element.appendChild(div);
+		}
+	})
+
+	</script>
+	<body>
+</html>
