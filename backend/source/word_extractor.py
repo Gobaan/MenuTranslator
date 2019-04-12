@@ -1,9 +1,9 @@
-import pickle
-import math
-import statistics
 from shapely.geometry.polygon import Polygon
 import logging
+import math
 import os.path
+import pickle
+import statistics
 
 class Word(object):
   def __init__(self, word):

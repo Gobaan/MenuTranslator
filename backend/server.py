@@ -1,17 +1,17 @@
-from jinja2 import Environment, FileSystemLoader
-
-import logging
 from base64 import b64decode
+from google.api_core.exceptions import NotFound
+from jinja2 import Environment, FileSystemLoader
+from source import menu_translator
+from source import word_extractor
+
 import cherrypy
 import google.cloud.storage
 import hashlib
-import menu_translator
-import pickle
-import uuid
-import word_extractor
 import html
 import json
-from google.api_core.exceptions import NotFound
+import logging
+import pickle
+import uuid
 
 logging.basicConfig(filename='app.log', level=logging.DEBUG)
 env = Environment(loader=FileSystemLoader('assets/templates'))

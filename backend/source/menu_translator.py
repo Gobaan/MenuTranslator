@@ -1,6 +1,6 @@
 import pickle
-import searcher
-import word_extractor
+from . import searcher
+from . import word_extractor
 import os.path
 
 def translate_image(image_url):
