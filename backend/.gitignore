@@ -3,10 +3,10 @@
 *.pickle
 *.jpeg
 __pycache__
-*.json
-*.cache
-
+package-lock.json
+gcloudtranslatekey.json
 *.log
 
+cache/
 node_modules/
 *.swp

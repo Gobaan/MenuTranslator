@@ -1,33 +1,47 @@
-# investigate exif rotation and allowing users to rotate
+#  Add symlinks to index.html and dist files so that cherrypy can launch them (or move cherrypy to the same folder, and autocopy my files over to the dist folder)
+#  Redesign ui into components (canvas top, small upload, rotate,and slice buttons. possbly ocr)
+#  Vueify the table, simple template that iterates
+#  Vueify blurrijg canvas
+#  Vueify the main app
+#  Clean up extra files (0.5 days)
+#  Allow users to rotate (0.5 days)
+# Create UI automation test cases ( 1-2 days)
+#  Refactor into smaller methods (1 day test case)
+#  Collect menus every day (persistent, until crawled,  3 days to write crawler?)
 #  scrape some online menus and create test sets
-# create a debug server witg default parameters
-# ocr keyboard
-# Limit file size on upload, better message on empty file
-# CLI for clearing or browsing cache
-# Clean up extra files
+#  Run some tests and document issues with each use case (2 days once data is collected)
 
-# add test cases
-# - move logic from server functions to external controller
-# - create client side tests 
-# - create ping tests
+Prioritize after testing:
+#  Live ocr? (or at least bounding box?) (2 days)
+# ocr keyboard (4 days, waterfall)
+## Allow Editting and saving of translations /input text? (3 days)
+#  create a debug server witg default parameters (1 day)
+# CLI for clearing or browsing cache (1 day)
 
-# Allow Editting and saving of translations /input text?
-# Move to google cloud?
-#  Parsing can be akward since menus go full retard, users need more control
-#  investigate translation to see if i can get the hints
-#  Location/Source hints may be value town
-#  create lookup table for approximate translations (food lookup table)
+# add test cases (2 days)
+# - move logic from server functions to external controller (1 day)
 
 Done
-# Done:  display axis or auto rotate so text is aligned before slicing
-# Done: Shrink image before upload to limit time
-# Add debug level logging/debug mode
-# Clickable table: On click: update canvas to highlgiht the given option
-# Highlight row on click, fix alignment on blur
+# Display axis or auto rotate so text is aligned before slicing (two days, using projection)
+# Done: Shrink image before upload to limit time (1 day)
+# Add debug level logging/debug mode (1 day/unmaintained)
+# Highlight row on click, fix alignment on blur (few hours)
+# EXIF rotation ( 2 days)
+
+# Before release
+# Create uptime and pricing alerts
+# Limit file size on upload, better message on empty file
+# Safe guard against doss
+# Move to google cloud?
 
 Stretch
 # Recreate menu but with translations? (doesn't fully work because words change size)a?
 # Slice menu,  create new similar menu, don't search images, recipes etc until user selects a word
 # Maintain relative ordering
-# Rotate the menu first?
-# Safe guard against doss
+
+
+# Advanced ML Model
+#  Parsing can be akward since menus go full retard, users need more control
+#  investigate translation to see if i can get the hints
+#  Location/Source hints may be value town
+#  create lookup table for approximate translations (food lookup table)

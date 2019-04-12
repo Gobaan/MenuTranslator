@@ -25,6 +25,10 @@ class Root(object):
     tmpl = env.get_template('viewport2.html')
     return tmpl.render()
 
+  @cherrypy.expose
+  def vue(self):
+    with open('homepage.html') as fp:
+        return fp.read().replace('static', 'translate/static')
 
   @cherrypy.expose
   def ocr(self):
@@ -74,14 +78,14 @@ class Root(object):
 
   @cherrypy.expose
   def debug(self):
-      with open('menu.pickle', 'rb') as fp:
+      with open('cache/menu.pickle', 'rb') as fp:
         ocr_json = pickle.load(fp)
 
       tmpl = env.get_template('canvas.html')
       text = ocr_json[1:]
       words = [word_extractor.Word(word) for word in text]
 
-      with open('names.pickle', 'rb') as fp:
+      with open('cache/names.pickle', 'rb') as fp:
           items = pickle.load(fp)
       SIZE = 1000    
       ratio = max(word_extractor.get_bounds(items)) / SIZE
@@ -91,7 +95,7 @@ class Root(object):
   def download(self):
     cherrypy.response.headers['Content-Type'] = 'application/octet-stream'
     cherrypy.response.headers['Content-Disposition'] = 'attachment;filename=menu.pickle'
-    with open('menu.pickle', 'rb') as fp:
+    with open('cache/menu.pickle', 'rb') as fp:
       return fp.read()
  
 if __name__ == '__main__':

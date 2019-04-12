@@ -3,6 +3,7 @@ import math
 import statistics
 from shapely.geometry.polygon import Polygon
 import logging
+import os.path
 
 class Word(object):
   def __init__(self, word):
@@ -112,7 +113,7 @@ def get_names(text):
 
 
 if __name__ == '__main__':
-  with open('menu.pickle', 'rb') as fp:
+  with open(os.path.join('cache', 'menu.pickle'), 'rb') as fp:
     ocr_json = pickle.load(fp)
   text = ocr_json[1:]
   print (ocr_json)

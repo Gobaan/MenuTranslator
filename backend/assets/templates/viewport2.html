@@ -1,5 +1,6 @@
 <html>
   <head>
+  <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet" type="text/css">
     <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <link href="assets/css/rotate.css" rel="stylesheet" type="text/css" media="all">
@@ -8,16 +9,34 @@
   <body>
     <input id="imageFile" name="imageFile" type="file" class="imageFile"  accept="image/*"   /> 
     <br/>
-    <div>
-    <img src="" id="output" max-width="100%">
-    </div>
 
     <form action="upload" method="post" enctype="multipart/form-data">
       <input id="input_image" name="menu_image" type="hidden" value="">
       <input id="bt_save" type="submit" value="Upload">
     </form>
-   
-   
+<div id="app">
+<v-app>
+
+			<main>
+
+				<v-content>
+      <v-btn>Button</v-button>
+      <v-btn variant="danger">Button</v-button>
+      <v-btn variant="success">Button</v-button>
+      <v-btn variant="outline-primary">Button</v-button>
+
+				</v-content>
+			</main>
+</v-app>
+    </div>
+
+    <div>
+    <img src="" id="output" max-width="100%">
+    </div>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.18/vue.min.js"></script>
+	<script src="https://unpkg.com/vuetify/dist/vuetify.min.js"></script>
+
   </body>
 </html>
    
